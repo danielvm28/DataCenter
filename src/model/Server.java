@@ -2,6 +2,7 @@ package model;
 
 /**
  * Class for the servers contained in the mini rooms
+ * 
  * @author Daniel Valencia - A00372845
  */
 public class Server {
@@ -13,25 +14,28 @@ public class Server {
     private int disksNumber;
     private double totalDiskCapacity;
 
-    //Relation
-    
+    // Relation
+
     private ServerProcessorBrand processorBrand;
 
-    //------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------
 
     // Constructor
 
     /**
      * Constructor of the server class
      * 
-     * @param cacheMemory the cache memory of the server
-     * @param ramMemory the RAM memory of the server
-     * @param processorsNumber the number of processors of the server
-     * @param disksNumber the number of disks of the server
-     * @param totalDiskCapacity the total capacity of the disks (in TeraBytes)
-     * @param processorBrandSelection the selection of the processor brand (<code>1</code> for Intel, <code>2</code> for AMD)
+     * @param cacheMemory             the cache memory of the server
+     * @param ramMemory               the RAM memory of the server
+     * @param processorsNumber        the number of processors of the server
+     * @param disksNumber             the number of disks of the server
+     * @param totalDiskCapacity       the total capacity of the disks (in TeraBytes)
+     * @param processorBrandSelection the selection of the processor brand
+     *                                (<code>1</code> for Intel, <code>2</code> for
+     *                                AMD)
      */
-    public Server(double cacheMemory, double ramMemory, int processorsNumber, int disksNumber, double totalDiskCapacity, int processorBrandSelection) {
+    public Server(double cacheMemory, double ramMemory, int processorsNumber, int disksNumber, double totalDiskCapacity,
+            int processorBrandSelection) {
         this.cacheMemory = cacheMemory;
         this.ramMemory = ramMemory;
         this.processorsNumber = processorsNumber;
@@ -40,12 +44,13 @@ public class Server {
         setProcessorBrand(processorBrandSelection);
     }
 
-    //------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------
 
     // Getters and setters
 
     /**
      * Returns the cache memory
+     * 
      * @return the cache memory of the server
      */
     public double getCacheMemory() {
@@ -54,6 +59,7 @@ public class Server {
 
     /**
      * Sets the cache memory of the server
+     * 
      * @param cacheMemory the cache memory to set
      */
     public void setCacheMemory(double cacheMemory) {
@@ -62,6 +68,7 @@ public class Server {
 
     /**
      * Returns the RAM memory
+     * 
      * @return the RAM memory of the server
      */
     public double getRamMemory() {
@@ -70,6 +77,7 @@ public class Server {
 
     /**
      * Sets the RAM memory of the server
+     * 
      * @param ramMemory the RAM memory to set
      */
     public void setRamMemory(double ramMemory) {
@@ -78,6 +86,7 @@ public class Server {
 
     /**
      * Returns the number of processors
+     * 
      * @return the number of processors of the server
      */
     public int getProcessorsNumber() {
@@ -86,6 +95,7 @@ public class Server {
 
     /**
      * Sets the number of processors of the server
+     * 
      * @param processorsNumber the number of processors to set
      */
     public void setProcessorsNumber(int processorsNumber) {
@@ -94,6 +104,7 @@ public class Server {
 
     /**
      * Returns the number of disks
+     * 
      * @return number of disks of the server
      */
     public int getDisksNumber() {
@@ -102,6 +113,7 @@ public class Server {
 
     /**
      * Sets the number of disks of the server
+     * 
      * @param disksNumber the number of disks to set
      */
     public void setDisksNumber(int disksNumber) {
@@ -110,6 +122,7 @@ public class Server {
 
     /**
      * Returns the total disk capacity
+     * 
      * @return the total disk capacity of the server (in TeraBytes)
      */
     public double getDisksCapacity() {
@@ -118,6 +131,7 @@ public class Server {
 
     /**
      * Sets the total disk capacity of the server
+     * 
      * @param totalDiskCapacity the total disk capacity to set (in TeraBytes)
      */
     public void setDisksCapacity(double totalDiskCapacity) {
@@ -126,6 +140,7 @@ public class Server {
 
     /**
      * Returns the processor brand
+     * 
      * @return the processor brand of the server
      */
     public ServerProcessorBrand getProcessorBrand() {
@@ -134,7 +149,9 @@ public class Server {
 
     /**
      * Sets the processor brand of the server
-     * @param processorBrandSelection <code>1</code> for Intel, <code>2</code> for AMD
+     * 
+     * @param processorBrandSelection <code>1</code> for Intel, <code>2</code> for
+     *                                AMD
      */
     public void setProcessorBrand(int processorBrandSelection) {
         switch (processorBrandSelection) {
@@ -147,10 +164,12 @@ public class Server {
         }
     }
 
-    //------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------
 
     @Override
     public String toString() {
-        return "Cache Memory: " + cacheMemory + " | RAM: " + ramMemory + " | Total disk capacity: " + totalDiskCapacity + " | Number of disks: " + disksNumber + " | Number of processors: " + processorsNumber + " | Processor brand: " + processorBrand;
+        return "Cache Memory: " + cacheMemory + " | RAM: " + ramMemory + " | Total disk capacity: " + totalDiskCapacity
+                + " | Number of disks: " + disksNumber + " | Number of processors: " + processorsNumber
+                + " | Processor brand: " + processorBrand;
     }
 }

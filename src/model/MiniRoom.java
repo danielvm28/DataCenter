@@ -13,6 +13,7 @@ public class MiniRoom {
     private int number;
     private LocalDate rentDate;
     private boolean inWindow;
+    private double initialRentValue;
     private double rentValue;
     private boolean on;
     private boolean available;
@@ -31,12 +32,12 @@ public class MiniRoom {
      * 
      * @param number the unique number that identifies the miniroom
      * @param inWindow boolean indicating if the miniroom is located in a window or not
-     * @param rentValue the value of the rent for the miniroom 
+     * @param initialRentValue the inital value of the rent for the miniroom 
      */
-    public MiniRoom(int number, boolean inWindow, double rentValue) {
+    public MiniRoom(int number, boolean inWindow, double initialRentValue) {
         this.number = number;
         this.inWindow = inWindow;
-        this.rentValue = rentValue;
+        this.initialRentValue = initialRentValue;
         on = false;
         available = true;
     }
@@ -91,6 +92,22 @@ public class MiniRoom {
      */
     public void setInWindow(boolean inWindow) {
         this.inWindow = inWindow;
+    }
+
+    /**
+     * Returns the initial rent value
+     * @return the initial rent value of the mini room
+     */
+    public double getInitialRentValue() {
+        return initialRentValue;
+    }
+
+    /**
+     * Sets the rent value of the mini room
+     * @param initialRentValue the initial rent value to set
+     */
+    public void setInitialRentValue(double initialRentValue) {
+        this.initialRentValue = initialRentValue;
     }
 
     /**
@@ -173,6 +190,13 @@ public class MiniRoom {
      */
     public void addServer(Server newServer) {
         servers.add(newServer);
+    }
+
+    /**
+     * Eliminates the associated servers in the mini room (Used when a rent is cancelled)
+     */
+    public void eliminateServers() {
+       servers.clear(); 
     }
 
     @Override

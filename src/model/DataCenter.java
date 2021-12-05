@@ -2,6 +2,11 @@ package model;
 
 import java.time.LocalDate;
 
+/**
+ * Controller class of the Data Center
+ * 
+ * @author Daniel Valencia - A00372845
+ */
 public class DataCenter {
     // Constants
 
@@ -57,14 +62,18 @@ public class DataCenter {
 
     /**
      * Goes over the mini room matrix to initialize the minirooms, assigning the
-     * window boolean
-     * and the rent value according to the location
+     * window boolean and the rent value according to the location
+     * 
+     * <p>
+     * <b>Precondition: </b> The user starts the program
+     * <p>
+     * <b>Postcondition: </b> Mini rooms with initial values
      * 
      * @param miniRoomsBaseValue base value of the mini rooms for the calculations
      */
     public void initializeMiniRooms(double miniRoomsBaseValue) {
         int number = 1;
-        double rentValue = 0;
+        double initialRentValue = 0;
         boolean inWindow = false;
         MiniRoom newMiniRoom;
 
@@ -72,23 +81,23 @@ public class DataCenter {
         for (int i = 0; i < miniRooms.length; i++) {
             for (int j = 0; j < miniRooms[0].length; j++) {
                 if (i == 0 || i == 7 || j == 0 || j == 49) { // If a mini room is found in a window
-                    rentValue = miniRoomsBaseValue * 0.9;
+                    initialRentValue = miniRoomsBaseValue * 0.9;
                     inWindow = true;
 
-                    newMiniRoom = new MiniRoom(number, inWindow, rentValue);
+                    newMiniRoom = new MiniRoom(number, inWindow, initialRentValue);
                     miniRooms[i][j] = newMiniRoom;
                 } else if (i == 6) { // If a mini room is in the 7th corridor (Excluding the ones in the windows)
-                    rentValue = miniRoomsBaseValue * 0.85;
+                    initialRentValue = miniRoomsBaseValue * 0.85;
                     inWindow = false;
 
-                    newMiniRoom = new MiniRoom(number, inWindow, rentValue);
+                    newMiniRoom = new MiniRoom(number, inWindow, initialRentValue);
                     miniRooms[i][j] = newMiniRoom;
                 } else if (i >= 1 && i <= 5) { // If a mini room is between the 2nd and 6th corridor (Excluding the ones
                                                // in the windows)
-                    rentValue = miniRoomsBaseValue * 1.25;
+                    initialRentValue = miniRoomsBaseValue * 1.25;
                     inWindow = false;
 
-                    newMiniRoom = new MiniRoom(number, inWindow, rentValue);
+                    newMiniRoom = new MiniRoom(number, inWindow, initialRentValue);
                     miniRooms[i][j] = newMiniRoom;
                 }
 
@@ -100,21 +109,33 @@ public class DataCenter {
     // ------------------------------------------------------------------------------------------------
 
     /**
-     * Rents a mini room considering its location, information of the company and date of rent
+     * Rents a mini room considering its location, information of the company and
+     * date of rent
      * 
-     * @param miniRoomLocation location of the mini room given in the format "ROW, COLUMN"
-     * @param rentDate the date of rent of the mini room
-     * @param companyNit nit of the associated company that is renting the mini room
-     * @param name name of the associated company that is renting the mini room
-     * @param numberOfServers number of servers that will be used in the mini room
-     * @return
+     * <p>
+     * <b>Precondition: </b> The user selected the option to rent a mini room in the
+     * menu
+     * <p>
+     * <b>Postcondition: </b> A message indicating the rent of the mini room or not
+     * 
+     * @param miniRoomLocation location of the mini room given in the format "ROW,
+     *                         COLUMN"
+     * @param rentDate         the date of rent of the mini room
+     * @param companyNit       nit of the associated company that is renting the
+     *                         mini room
+     * @param name             name of the associated company that is renting the
+     *                         mini room
+     * @param numberOfServers  number of servers that will be used in the mini room
+     * @return message indicating the result of the operation
      */
-    public String rentMiniRoom(String miniRoomLocation, LocalDate rentDate, String companyNit, String name, int numberOfServers) {
+    public String rentMiniRoom(String miniRoomLocation, LocalDate rentDate, String companyNit, String name,
+            int numberOfServers) {
         String message = "";
         MiniRoom foundMiniRoom = locateMiniRoom(miniRoomLocation);
+        double rentValue = 0.0;
 
         // Checks if the selected mini room is available for rent or not
-        if (foundMiniRoom.isAvailable()){
+        if (foundMiniRoom.isAvailable()) {
             message = "Mini romm rented!";
 
             Company associatedCompany = new Company(companyNit, name);
@@ -125,11 +146,13 @@ public class DataCenter {
 
             // Checks if the fine needs to be added or not
             if (numberOfServers < 4) {
-                double newRentValue = foundMiniRoom.getRentValue() * 1.15;
-                foundMiniRoom.setRentValue(newRentValue);
-
+                rentValue = foundMiniRoom.getInitialRentValue() * 1.15;
                 message += ", fine of 15% over the rent value applied for underutilization of the servers";
+            } else {
+                rentValue = foundMiniRoom.getInitialRentValue();
             }
+
+            foundMiniRoom.setRentValue(rentValue);
         } else {
             message = "Error, the selected mini room is already rented";
         }
@@ -140,20 +163,29 @@ public class DataCenter {
     // ------------------------------------------------------------------------------------------------
 
     /**
-     * Overloaded method to rent a mini room for investigation purposes, considering its location, rent date and the number of the investigation project
+     * Overloaded method to rent a mini room for investigation purposes, considering
+     * its location, rent date and the number of the investigation project
      * 
-     * @param miniRoomLocation location of the mini room given in the format "ROW, COLUMN"
-     * @param rentDate the date of rent of the mini room
-     * @param projectNumber registry number of the investigation project
-     * @param numberOfServers number of servers that will be used in the mini room
-     * @return
+     * <p>
+     * <b>Precondition: </b> The user selected the option to rent a mini room menu
+     * by the means of an investigation project
+     * <p>
+     * <b>Postcondition: </b> A message indicating the rent of the mini room or not
+     * 
+     * @param miniRoomLocation location of the mini room given in the format "ROW,
+     *                         COLUMN"
+     * @param rentDate         the date of rent of the mini room
+     * @param projectNumber    registry number of the investigation project
+     * @param numberOfServers  number of servers that will be used in the mini room
+     * @return message indicating the result of the operation
      */
     public String rentMiniRoom(String miniRoomLocation, LocalDate rentDate, String projectNumber, int numberOfServers) {
         String message = "";
         MiniRoom foundMiniRoom = locateMiniRoom(miniRoomLocation);
+        double rentValue = 0.0;
 
         // Checks if the selected mini room is available for rent or not
-        if (foundMiniRoom.isAvailable()){
+        if (foundMiniRoom.isAvailable()) {
             message = "Mini room rented for investigation project!";
 
             Company associatedCompany = new Company(projectNumber);
@@ -164,11 +196,13 @@ public class DataCenter {
 
             // Checks if the fine needs to be added or not
             if (numberOfServers < 4) {
-                double newRentValue = foundMiniRoom.getRentValue() * 1.15;
-                foundMiniRoom.setRentValue(newRentValue);
-
+                rentValue = foundMiniRoom.getInitialRentValue() * 1.15;
                 message += ", fine of 15% over the rent value applied for underutilization of the servers";
+            } else {
+                rentValue = foundMiniRoom.getInitialRentValue();
             }
+
+            foundMiniRoom.setRentValue(rentValue);
         } else {
             message = "Error, the selected mini room is already rented";
         }
@@ -178,31 +212,103 @@ public class DataCenter {
 
     // ------------------------------------------------------------------------------------------------
 
+    /**
+     * Adds a new server into the mini room considering all of its information
+     * 
+     * <p>
+     * <b>Precondition: </b> The user selected the option to rent a mini room in the
+     * menu
+     * <p>
+     * <b>Postcondition: </b> The addition of servers in the mini room
+     * 
+     * @param miniRoomLocation        location of the mini room given in the format
+     *                                "ROW,
+     *                                COLUMN"
+     * @param cacheMemory             the cache memory of the server
+     * @param ramMemory               the RAM memory of the server
+     * @param processorsNumber        the number of processors of the server
+     * @param disksNumber             the number of disks of the server
+     * @param totalDiskCapacity       the total capacity of the disks (in TeraBytes)
+     * @param processorBrandSelection the selection of the processor brand
+     *                                (<code>1</code> for Intel, <code>2</code> for
+     *                                AMD)
+     */
     public void addServerToMiniRoom(String miniRoomLocation, double cacheMemory, double ramMemory, int processorsNumber,
             int disksNumber, double totalDiskCapacity, int processorBrandSelection) {
+        MiniRoom foundMiniRoom = locateMiniRoom(miniRoomLocation);
+        Server newServer = new Server(cacheMemory, ramMemory, processorsNumber, disksNumber, totalDiskCapacity,
+                processorBrandSelection);
 
+        foundMiniRoom.addServer(newServer);
     }
 
     // ------------------------------------------------------------------------------------------------
 
+    /**
+     * Prints the list of available mini rooms in the matrix
+     * 
+     * <p>
+     * <b>Precondition: </b> The user selected the option to list the available mini
+     * rooms in the menu
+     * <p>
+     * <b>Postcondition: </b> A list of the available mini rooms
+     * 
+     * @return the list of available mini rooms
+     */
     public String printAvailableMiniRooms() {
-        String message = "";
+        String list = "";
 
-        return message;
+        // Go over the matrix and identify the available mini rooms to print
+        for (int i = 0; i < miniRooms.length; i++) {
+            for (int j = 0; j < miniRooms[0].length; j++) {
+                if (miniRooms[i][j].isAvailable()) {
+                    list += "\n" + "Row: " + i + "| Column: " + j + "| " + miniRooms[i][j].toString();
+                }
+            }
+        }
+
+        return list;
     }
 
     // ------------------------------------------------------------------------------------------------
 
+    /**
+     * Cancels the rent of a specific mini room (Sets the status to available,
+     * erases the rent date, associated company and servers, resets the rent value
+     * to its initial value and turns the mini room off)
+     * 
+     * <p>
+     * <b>Precondition: </b> The user selected the option to cancel the rent of an
+     * specific mini room in the menu
+     * <p>
+     * <b>Postcondition: </b> The cancelation of the rent of the mini room
+     * 
+     * @param miniRoomLocation location of the mini room given in the format "ROW,
+     *                         COLUMN"
+     * @return message indicating the result of the operation
+     */
     public String cancelRent(String miniRoomLocation) {
         String message = "";
+        MiniRoom foundMiniRoom = locateMiniRoom(miniRoomLocation);
 
-        return message;
-    }
+        // Checks if the specified mini room exists or not
+        if (foundMiniRoom != null) {
+            // Checks the availablility of the mini room
+            if (!foundMiniRoom.isAvailable()) {
+                foundMiniRoom.setAvailable(true);
+                foundMiniRoom.setRentDate(null);
+                foundMiniRoom.setAssociatedCompany(null);
+                foundMiniRoom.eliminateServers();
+                foundMiniRoom.setRentValue(foundMiniRoom.getInitialRentValue());
+                foundMiniRoom.setOn(false);
 
-    // ------------------------------------------------------------------------------------------------
-
-    public String cancelRent() {
-        String message = "";
+                message = "Rent cancelled!";
+            } else {
+                message = "Error, the mini room has not been rented";
+            }
+        } else {
+            message = "Error, mini room not found";
+        }
 
         return message;
     }
@@ -210,8 +316,41 @@ public class DataCenter {
     // ------------------------------------------------------------------------------------------------
 
     /**
+     * Overloaded method to cancel the rent of every mini room (Sets the status to
+     * available, erases the rent date, associated company and servers, resets the
+     * rent value to its initial value and turns the mini rooms off)
+     * 
+     * <p>
+     * <b>Precondition: </b> The user selected the option to cancel the rent of all
+     * the mini rooms in the menu
+     * <p>
+     * <b>Postcondition: </b> The cancelation of the rent of all the mini rooms
+     */
+    public void cancelRent() {
+        // Goes over the mini rooms cancelling rents
+        for (int i = 0; i < miniRooms.length; i++) {
+            for (int j = 0; j < miniRooms[0].length; j++) {
+                miniRooms[i][j].setAvailable(true);
+                miniRooms[i][j].setRentDate(null);
+                miniRooms[i][j].setAssociatedCompany(null);
+                miniRooms[i][j].eliminateServers();
+                miniRooms[i][j].setRentValue(miniRooms[i][j].getInitialRentValue());
+                miniRooms[i][j].setOn(false);
+            }
+        }
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    /**
      * Goes over the mini rooms printing <code>1</code> if the mini room is on and
      * <code>0</code> if the mini room is off
+     * 
+     * <p>
+     * <b>Precondition: </b> The user selected the option to print the data center
+     * map in the menu, or was testing the power protocols
+     * <p>
+     * <b>Postcondition: </b> A map of the mini room matrix
      * 
      * @return the data center map indicating the power state (on/off) of the mini
      *         rooms
@@ -237,6 +376,13 @@ public class DataCenter {
     /**
      * Powers on every mini room (Without considering its availability) to test the
      * power off protocols
+     * 
+     * <p>
+     * <b>Precondition: </b> The user decided to manipulate the mini rooms in the
+     * menu, and selected the option to simulate the power on protocol
+     * <p>
+     * <b>Postcondition: </b> All of the mini rooms are powered on disregarding the
+     * state
      */
     public void simulatePowerOnProtocol() {
         // Itterates over the mini rooms powering them on
@@ -252,11 +398,103 @@ public class DataCenter {
     /**
      * Powers off the mini rooms according to a specified way
      * 
+     * <p>
+     * <b>Precondition: </b> The user decided to manipulate the mini rooms in the
+     * menu, and selected the option to simulate the power off protocol
+     * <p>
+     * <b>Postcondition: </b> The mini rooms are powered off in a specified way
+     * 
      * @param letter indicates the specified way in which the mini rooms will be
      *               turned off
      */
     public void simulatePowerOffProtocol(char letter) {
+        // Turn off the mini rooms according to the given letter
+        switch (letter) {
+            case 'L': // All of the mini rooms in the first corridor and the first mini rooms of all
+                      // the other corridors
+                for (int i = 0; i < miniRooms.length; i++) {
+                    for (int j = 0; j < miniRooms[0].length; j++) {
+                        if (i == 0) {
+                            miniRooms[i][j].setOn(false);
+                        } else if (j == 0) {
+                            miniRooms[i][j].setOn(false);
+                        }
+                    }
+                }
+                break;
+            case 'Z': // Z shaped pattern
+                int col = 49;
+                for (int i = 0; i < miniRooms.length; i++) {
+                    for (int j = 0; j < miniRooms[0].length; j++) {
+                        if (i == 0) {
+                            miniRooms[i][j].setOn(false);
+                        } else if (i == 7) {
+                            miniRooms[i][j].setOn(false);
+                        } else if (j == col) {
+                            miniRooms[i][j].setOn(false);
+                        }
+                    }
+                    col--;
+                }
+                break;
+            case 'H': // All of the odd corridors
+                for (int i = 0; i < miniRooms.length; i++) {
+                    for (int j = 0; j < miniRooms[0].length; j++) {
+                        if ((i + 1) % 2 != 0) {
+                            miniRooms[i][j].setOn(false);
+                        }
+                    }
+                }
+                break;
+            case 'O': // For the mini rooms located in the windows
+                for (int i = 0; i < miniRooms.length; i++) {
+                    for (int j = 0; j < miniRooms[0].length; j++) {
+                        if (miniRooms[i][j].isInWindow()) {
+                            miniRooms[i][j].setOn(false);
+                        }
+                    }
+                }
+                break;
+        }
+    }
 
+    // ------------------------------------------------------------------------------------------------
+
+    /**
+     * Powers off the mini rooms in columns or rows according to a number
+     * 
+     * <p>
+     * <b>Precondition: </b> The user decided to manipulate the mini rooms in the
+     * menu, and selected the option to simulate the power off protocol
+     * <p>
+     * <b>Postcondition: </b> The mini rooms are powered off in a specified way
+     * 
+     * @param letter      indicates the specified way in which the mini rooms will
+     *                    be turned off
+     * @param columnOrRow indicates the number of the column or row that will be
+     *                    turned off
+     */
+    public void simulatePowerOffProtocol(char letter, int columnOrRow) {
+        switch (letter) {
+            case 'M': // For the mini rooms in the specified column
+                for (int i = 0; i < miniRooms.length; i++) {
+                    for (int j = 0; j < miniRooms.length; j++) {
+                        if ((columnOrRow - 1) == j) {
+                            miniRooms[i][j].setOn(false);
+                        }
+                    }
+                }
+                break;
+            case 'P': // For the mini rooms in the specified row
+                for (int i = 0; i < miniRooms.length; i++) {
+                    for (int j = 0; j < miniRooms[0].length; j++) {
+                        if ((columnOrRow - 1) == i) {
+                            miniRooms[i][j].setOn(false);
+                        }
+                    }
+                }
+                break;
+        }
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -264,8 +502,15 @@ public class DataCenter {
     /**
      * Locates a mini room according to the location given separated by a comma
      * 
-     * @param miniRoomLocation location of the mini room given in the format "ROW, COLUMN"
-     * @return the found mini room object or <code>null</code> if the mini room was not found
+     * <p>
+     * <b>Precondition: </b> It is needed to interact with a mini room
+     * <p>
+     * <b>Postcondition: </b> The mini room object is located
+     * 
+     * @param miniRoomLocation location of the mini room given in the format "ROW,
+     *                         COLUMN"
+     * @return the found mini room object or <code>null</code> if the mini room was
+     *         not found
      */
     public MiniRoom locateMiniRoom(String miniRoomLocation) {
         MiniRoom foundMiniRoom;
