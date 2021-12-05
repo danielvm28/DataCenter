@@ -17,7 +17,7 @@ public class Company {
 
     /**
      * Constructor for investigation projects, the company name and NIT are inferred to the ones of ICESI University
-     * @param projectNumber the number of the investigation project
+     * @param projectNumber the registry number of the investigation project
      */
     public Company(String projectNumber) {
         this.projectNumber = projectNumber;

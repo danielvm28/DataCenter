@@ -3,10 +3,14 @@ package model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * Class for the mini rooms of the datacenter
+ * @author Daniel Valencia - A00372845
+ */
 public class MiniRoom {
     // Attributes
     
-    private double baseValue;
+    private int number;
     private LocalDate rentDate;
     private boolean inWindow;
     private double rentValue;
@@ -14,6 +18,7 @@ public class MiniRoom {
     private boolean available;
 
     //Relations
+    
     private Company associatedCompany;
     private ArrayList<Server> servers;
 
@@ -22,14 +27,14 @@ public class MiniRoom {
     // Constructor
 
     /**
-     * Constructor of the miniroom (Used to initialize)
+     * Constructor of the miniroom. For default, all minirooms are set to off and available
      * 
-     * @param baseValue base value for all the minirooms
+     * @param number the unique number that identifies the miniroom
      * @param inWindow boolean indicating if the miniroom is located in a window or not
-     * @param rentValue the final value of the rent for the miniroom 
+     * @param rentValue the value of the rent for the miniroom 
      */
-    public MiniRoom(double baseValue, boolean inWindow, double rentValue) {
-        this.baseValue = baseValue;
+    public MiniRoom(int number, boolean inWindow, double rentValue) {
+        this.number = number;
         this.inWindow = inWindow;
         this.rentValue = rentValue;
         on = false;
@@ -41,19 +46,19 @@ public class MiniRoom {
     // Getters and setters
 
     /**
-     * Returns the base value
-     * @return base value of the mini room
+     * Returns the number
+     * @return the number of the mini room
      */
-    public double getBaseValue() {
-        return baseValue;
+    public int getNumber() {
+        return number;
     }
 
     /**
-     * Sets the base value of the mini room
-     * @param minimumWatchAge the base value to set
+     * Sets the number of the mini room
+     * @param number the number to set
      */
-    public void setBaseValue(double baseValue) {
-        this.baseValue = baseValue;
+    public void setNumber(int number) {
+        this.number = number;
     }
 
     /**
@@ -66,7 +71,7 @@ public class MiniRoom {
 
     /**
      * Sets the rent date of the mini room
-     * @param minimumWatchAge the rent date to set
+     * @param rentDate the rent date to set
      */
     public void setRentDate(LocalDate rentDate) {
         this.rentDate = rentDate;
@@ -159,7 +164,7 @@ public class MiniRoom {
     public ArrayList<Server> getServers() {
         return servers;
     }
-    
+
     //------------------------------------------------------------------------------------------------
 
     /**
