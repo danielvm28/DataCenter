@@ -125,7 +125,7 @@ public class Server {
      * 
      * @return the total disk capacity of the server (in TeraBytes)
      */
-    public double getDisksCapacity() {
+    public double getTotalDiskCapacity() {
         return totalDiskCapacity;
     }
 
@@ -134,7 +134,7 @@ public class Server {
      * 
      * @param totalDiskCapacity the total disk capacity to set (in TeraBytes)
      */
-    public void setDisksCapacity(double totalDiskCapacity) {
+    public void setTotalDiskCapacity(double totalDiskCapacity) {
         this.totalDiskCapacity = totalDiskCapacity;
     }
 

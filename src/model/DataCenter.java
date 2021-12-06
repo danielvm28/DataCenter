@@ -136,11 +136,12 @@ public class DataCenter {
 
         // Checks if the selected mini room is available for rent or not
         if (foundMiniRoom.isAvailable()) {
-            message = "Mini romm rented!";
+            message = "Mini room rented!";
 
             Company associatedCompany = new Company(companyNit, name);
 
             foundMiniRoom.setAvailable(false);
+            foundMiniRoom.setOn(true);
             foundMiniRoom.setRentDate(rentDate);
             foundMiniRoom.setAssociatedCompany(associatedCompany);
 
@@ -191,6 +192,7 @@ public class DataCenter {
             Company associatedCompany = new Company(projectNumber);
 
             foundMiniRoom.setAvailable(false);
+            foundMiniRoom.setOn(true);
             foundMiniRoom.setRentDate(rentDate);
             foundMiniRoom.setAssociatedCompany(associatedCompany);
 
@@ -262,12 +264,13 @@ public class DataCenter {
         for (int i = 0; i < miniRooms.length; i++) {
             for (int j = 0; j < miniRooms[0].length; j++) {
                 if (miniRooms[i][j].isAvailable()) {
-                    list += "\n" + "Row: " + i + "| Column: " + j + "| " + miniRooms[i][j].toString();
+                    list += "\n" + "Row: " + (i+1) + "| Column: " + (j+1) + "| " + miniRooms[i][j].toString();
                 }
             }
         }
 
-        return list;
+        // Checks if any available mini room has been found
+        return list.equals("") ? "No available mini rooms" : list;
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -291,23 +294,18 @@ public class DataCenter {
         String message = "";
         MiniRoom foundMiniRoom = locateMiniRoom(miniRoomLocation);
 
-        // Checks if the specified mini room exists or not
-        if (foundMiniRoom != null) {
-            // Checks the availablility of the mini room
-            if (!foundMiniRoom.isAvailable()) {
-                foundMiniRoom.setAvailable(true);
-                foundMiniRoom.setRentDate(null);
-                foundMiniRoom.setAssociatedCompany(null);
-                foundMiniRoom.eliminateServers();
-                foundMiniRoom.setRentValue(foundMiniRoom.getInitialRentValue());
-                foundMiniRoom.setOn(false);
+        // Checks the availablility of the mini room
+        if (!foundMiniRoom.isAvailable()) {
+            foundMiniRoom.setAvailable(true);
+            foundMiniRoom.setRentDate(null);
+            foundMiniRoom.setAssociatedCompany(null);
+            foundMiniRoom.eliminateServers();
+            foundMiniRoom.setRentValue(foundMiniRoom.getInitialRentValue());
+            foundMiniRoom.setOn(false);
 
-                message = "Rent cancelled!";
-            } else {
-                message = "Error, the mini room has not been rented";
-            }
+            message = "Rent cancelled!";
         } else {
-            message = "Error, mini room not found";
+            message = "Error, the mini room has not been rented";
         }
 
         return message;
@@ -423,18 +421,30 @@ public class DataCenter {
                 }
                 break;
             case 'Z': // Z shaped pattern
-                int col = 49;
+                int col = 7;
+                int col2 = 14;
+                int col3 = 21;
+                int col4 = 28;
+                int col5 = 35;
+                int col6 = 42;
+                int col7 = 49;
                 for (int i = 0; i < miniRooms.length; i++) {
                     for (int j = 0; j < miniRooms[0].length; j++) {
                         if (i == 0) {
                             miniRooms[i][j].setOn(false);
                         } else if (i == 7) {
                             miniRooms[i][j].setOn(false);
-                        } else if (j == col) {
+                        } else if (j == col || j == col2 || j == col3 || j == col4 || j == col5 || j == col6 || j == col7) {
                             miniRooms[i][j].setOn(false);
                         }
                     }
                     col--;
+                    col2--;
+                    col3--;
+                    col4--;
+                    col5--;
+                    col6--;
+                    col7--;
                 }
                 break;
             case 'H': // All of the odd corridors
@@ -518,7 +528,7 @@ public class DataCenter {
         int miniRoomRow = Integer.parseInt(miniRoomLCoordinates[0]) - 1;
         int miniRoomColumn = Integer.parseInt(miniRoomLCoordinates[1]) - 1;
 
-        if ((miniRoomColumn < 0 && miniRoomColumn > 49) || (miniRoomRow < 0 && miniRoomRow > 7)) {
+        if ((miniRoomColumn < 0 || miniRoomColumn > 49) || (miniRoomRow < 0 || miniRoomRow > 7)) {
             foundMiniRoom = null;
         } else {
             foundMiniRoom = miniRooms[miniRoomRow][miniRoomColumn];

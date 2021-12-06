@@ -40,6 +40,7 @@ public class MiniRoom {
         this.initialRentValue = initialRentValue;
         on = false;
         available = true;
+        servers = new ArrayList<Server>();
     }
 
     //------------------------------------------------------------------------------------------------
@@ -199,11 +200,41 @@ public class MiniRoom {
        servers.clear(); 
     }
 
+    //------------------------------------------------------------------------------------------------
+
+    /**
+     * Determines the processing capacity of the mini room
+     * 
+     * <p>
+     * <b>Precondition: </b> The user wanted to cancel the rent of a specific mini room
+     * <p>
+     * <b>Postcondition: </b> The information of the processing capacity is displayed
+     * 
+     * @return the information about the processing capacity of the mini room
+     */
+    public String displayProcessingCapacity() {
+        String processingCapacity = "";
+        double totalServersRam = 0.0;
+        double totalServersDiskCapacity = 0.0;
+
+        // For all the servers
+        for (Server server : servers) {
+            totalServersDiskCapacity += server.getTotalDiskCapacity();
+            totalServersRam += server.getRamMemory();
+        }
+
+        processingCapacity = "Total servers disk capacity: " + totalServersDiskCapacity + " | Total servers RAM: " + totalServersRam;
+
+        return processingCapacity;
+    }
+
+    //------------------------------------------------------------------------------------------------
+
     @Override
     public String toString() {
         String windowString = inWindow ? "In window" : "Not in window";
         String availableString = available ? "Available" : "Unavailable";
 
-        return "Availability: " + availableString + " | Location: " + windowString + " | Rent Value: " + rentValue;
+        return "Availability: " + availableString + " | Location: " + windowString + " | Initial Rent Value: " + initialRentValue;
     }
 }
