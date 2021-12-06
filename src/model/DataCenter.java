@@ -20,6 +20,7 @@ public class DataCenter {
     // Relation
 
     private MiniRoom[][] miniRooms;
+    private MiniRoom[][] testMiniRooms;
 
     // ------------------------------------------------------------------------------------------------
 
@@ -33,6 +34,7 @@ public class DataCenter {
     public DataCenter(double miniRoomsBaseValue) {
         this.miniRoomsBaseValue = miniRoomsBaseValue;
         miniRooms = new MiniRoom[ROWS][COLUMNS];
+        testMiniRooms = new MiniRoom[ROWS][COLUMNS];
         initializeMiniRooms(miniRoomsBaseValue);
     }
 
@@ -100,6 +102,9 @@ public class DataCenter {
                     newMiniRoom = new MiniRoom(number, inWindow, initialRentValue);
                     miniRooms[i][j] = newMiniRoom;
                 }
+
+                // Fill the test matrix with mini rooms
+                testMiniRooms[i][j] = new MiniRoom(0, false, 0);
 
                 number++;
             }
@@ -346,7 +351,7 @@ public class DataCenter {
      * 
      * <p>
      * <b>Precondition: </b> The user selected the option to print the data center
-     * map in the menu, or was testing the power protocols
+     * map in the menu
      * <p>
      * <b>Postcondition: </b> A map of the mini room matrix
      * 
@@ -372,8 +377,37 @@ public class DataCenter {
     // ------------------------------------------------------------------------------------------------
 
     /**
-     * Powers on every mini room (Without considering its availability) to test the
-     * power off protocols
+     * Goes over the mini rooms printing <code>1</code> if the mini room is on and
+     * <code>0</code> if the mini room is off. Test variant to test the power states
+     * 
+     * <p>
+     * <b>Precondition: </b> The user was testing the power protocols
+     * <p>
+     * <b>Postcondition: </b> A map of the mini room test matrix
+     * 
+     * @return the test data center map indicating the power state (on/off) of the mini
+     *         rooms
+     */
+    public String printTestMap() {
+        String map = "";
+
+        // Itterates over the mini rooms checking the power state and adding the results
+        // to the map String
+        for (int i = 0; i < testMiniRooms.length; i++) {
+            for (int j = 0; j < testMiniRooms[0].length; j++) {
+                map += testMiniRooms[i][j].isOn() == true ? "[" + 1 + "]" : "[" + 0 + "]";
+            }
+
+            map += "\n";
+        }
+
+        return map;
+    }
+
+    // ------------------------------------------------------------------------------------------------
+
+    /**
+     * Powers on every mini room in the test matrix to test the power off protocols
      * 
      * <p>
      * <b>Precondition: </b> The user decided to manipulate the mini rooms in the
@@ -384,9 +418,9 @@ public class DataCenter {
      */
     public void simulatePowerOnProtocol() {
         // Itterates over the mini rooms powering them on
-        for (int i = 0; i < miniRooms.length; i++) {
-            for (int j = 0; j < miniRooms[0].length; j++) {
-                miniRooms[i][j].setOn(true);
+        for (int i = 0; i < testMiniRooms.length; i++) {
+            for (int j = 0; j < testMiniRooms[0].length; j++) {
+                testMiniRooms[i][j].setOn(true);
             }
         }
     }
@@ -410,12 +444,12 @@ public class DataCenter {
         switch (letter) {
             case 'L': // All of the mini rooms in the first corridor and the first mini rooms of all
                       // the other corridors
-                for (int i = 0; i < miniRooms.length; i++) {
-                    for (int j = 0; j < miniRooms[0].length; j++) {
+                for (int i = 0; i < testMiniRooms.length; i++) {
+                    for (int j = 0; j < testMiniRooms[0].length; j++) {
                         if (i == 0) {
-                            miniRooms[i][j].setOn(false);
+                            testMiniRooms[i][j].setOn(false);
                         } else if (j == 0) {
-                            miniRooms[i][j].setOn(false);
+                            testMiniRooms[i][j].setOn(false);
                         }
                     }
                 }
@@ -428,14 +462,14 @@ public class DataCenter {
                 int col5 = 35;
                 int col6 = 42;
                 int col7 = 49;
-                for (int i = 0; i < miniRooms.length; i++) {
-                    for (int j = 0; j < miniRooms[0].length; j++) {
+                for (int i = 0; i < testMiniRooms.length; i++) {
+                    for (int j = 0; j < testMiniRooms[0].length; j++) {
                         if (i == 0) {
-                            miniRooms[i][j].setOn(false);
+                            testMiniRooms[i][j].setOn(false);
                         } else if (i == 7) {
-                            miniRooms[i][j].setOn(false);
+                            testMiniRooms[i][j].setOn(false);
                         } else if (j == col || j == col2 || j == col3 || j == col4 || j == col5 || j == col6 || j == col7) {
-                            miniRooms[i][j].setOn(false);
+                            testMiniRooms[i][j].setOn(false);
                         }
                     }
                     col--;
@@ -448,19 +482,19 @@ public class DataCenter {
                 }
                 break;
             case 'H': // All of the odd corridors
-                for (int i = 0; i < miniRooms.length; i++) {
-                    for (int j = 0; j < miniRooms[0].length; j++) {
+                for (int i = 0; i < testMiniRooms.length; i++) {
+                    for (int j = 0; j < testMiniRooms[0].length; j++) {
                         if ((i + 1) % 2 != 0) {
-                            miniRooms[i][j].setOn(false);
+                            testMiniRooms[i][j].setOn(false);
                         }
                     }
                 }
                 break;
             case 'O': // For the mini rooms located in the windows
-                for (int i = 0; i < miniRooms.length; i++) {
-                    for (int j = 0; j < miniRooms[0].length; j++) {
-                        if (miniRooms[i][j].isInWindow()) {
-                            miniRooms[i][j].setOn(false);
+                for (int i = 0; i < testMiniRooms.length; i++) {
+                    for (int j = 0; j < testMiniRooms[0].length; j++) {
+                        if (i == 0 || i == 7 || j == 0 || j == 49) {
+                            testMiniRooms[i][j].setOn(false);
                         }
                     }
                 }
@@ -487,19 +521,19 @@ public class DataCenter {
     public void simulatePowerOffProtocol(char letter, int columnOrRow) {
         switch (letter) {
             case 'M': // For the mini rooms in the specified column
-                for (int i = 0; i < miniRooms.length; i++) {
-                    for (int j = 0; j < miniRooms.length; j++) {
+                for (int i = 0; i < testMiniRooms.length; i++) {
+                    for (int j = 0; j < testMiniRooms.length; j++) {
                         if ((columnOrRow - 1) == j) {
-                            miniRooms[i][j].setOn(false);
+                            testMiniRooms[i][j].setOn(false);
                         }
                     }
                 }
                 break;
             case 'P': // For the mini rooms in the specified row
-                for (int i = 0; i < miniRooms.length; i++) {
-                    for (int j = 0; j < miniRooms[0].length; j++) {
+                for (int i = 0; i < testMiniRooms.length; i++) {
+                    for (int j = 0; j < testMiniRooms[0].length; j++) {
                         if ((columnOrRow - 1) == i) {
-                            miniRooms[i][j].setOn(false);
+                            testMiniRooms[i][j].setOn(false);
                         }
                     }
                 }

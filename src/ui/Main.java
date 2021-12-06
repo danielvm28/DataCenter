@@ -43,7 +43,7 @@ public class Main {
         double ramMemory = 0.0;
         int processorsNumber = 0;
         int disksNumber = 0;
-        double totalDiskCapacity = 0;
+        double totalDiskCapacity = 0.0;
         int processorBrandSelection = 0;
 
         // Ask for the mini room data
@@ -104,7 +104,7 @@ public class Main {
                 System.out.print("Input the NIT of the company: ");
                 companyNit = s.nextLine();
 
-                System.out.println("\n" + 
+                System.out.println("\n" +
                         dataCenter.rentMiniRoom(miniRoomLocation, rentDate, companyNit, companyName, numberOfServers));
                 break;
             case 2:
@@ -112,7 +112,8 @@ public class Main {
                 s.nextLine();
                 projectNumber = s.nextLine();
 
-                System.out.println("\n" + dataCenter.rentMiniRoom(miniRoomLocation, rentDate, projectNumber, numberOfServers));
+                System.out.println(
+                        "\n" + dataCenter.rentMiniRoom(miniRoomLocation, rentDate, projectNumber, numberOfServers));
                 break;
         }
 
@@ -240,14 +241,15 @@ public class Main {
                 // Check the existence of the mini room
                 if (dataCenter.locateMiniRoom(miniRoomLocation) != null) {
                     String choice = "";
-                    System.out.println("\nThe mini room has this processing capacity: \n" + dataCenter.locateMiniRoom(miniRoomLocation).displayProcessingCapacity());
+                    System.out.println("\nThe mini room has this processing capacity: \n"
+                            + dataCenter.locateMiniRoom(miniRoomLocation).displayProcessingCapacity());
 
                     // Display the processing capacity of the mini room and then ask
                     do {
                         System.out.print("Are you sure you want to cancel the rent of this mini room? (y/n) ");
                         choice = s.nextLine().toUpperCase();
                     } while (!choice.equals("Y") && !choice.equals("N"));
-                    
+
                     if (choice.equals("Y")) {
                         System.out.println("\n" + dataCenter.cancelRent(miniRoomLocation));
                     }
@@ -255,7 +257,7 @@ public class Main {
                 } else {
                     System.out.println("Error, mini room not found");
                 }
-                
+
                 break;
             case 2:
                 dataCenter.cancelRent();
@@ -275,12 +277,19 @@ public class Main {
      * 
      * <p>
      * <b>Precondition: </b> The user selected the option to show the data center
-     * map in the menu
+     * map in the menu or is testing the power protocols
      * <p>
      * <b>Postcondition: </b> The printed data center map
+     * 
+     * @param test indicates if the map that is going to be shown, will be the one to
+     *             test the power states or the regular one
      */
-    public static void showDataCenterMap() {
-        System.out.println("\n" + dataCenter.printDataCenterMap());
+    public static void showDataCenterMap(boolean test) {
+        if (test) {
+            System.out.println("\n" + dataCenter.printTestMap());
+        } else {
+            System.out.println("\n" + dataCenter.printDataCenterMap());
+        }
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -306,7 +315,8 @@ public class Main {
             System.out.println("\n-----------------------------------------------------\n");
             System.out.println("Introduce a single character according to the following:");
             System.out.println("1. Simulate power On protocol (Turns all of the mini rooms On)");
-            System.out.println("L. Turns off the first mini rooms of all hallways and all of the ones in the first hallway");
+            System.out.println(
+                    "L. Turns off the first mini rooms of all hallways and all of the ones in the first hallway");
             System.out.println("Z. Turns off the mini rooms in a 'Z' shaped way");
             System.out.println("H. Turns off the mini rooms in odd hallways");
             System.out.println("O. Turns off the mini rooms located in the windows");
@@ -331,7 +341,7 @@ public class Main {
                 case 'H':
                 case 'O':
                     dataCenter.simulatePowerOffProtocol(selection);
-                    showDataCenterMap();
+                    showDataCenterMap(true);
                     System.out.println("\nPress enter to continue...");
                     s.nextLine();
                     break;
@@ -340,7 +350,7 @@ public class Main {
                     columnOrRow = s.nextInt();
 
                     dataCenter.simulatePowerOffProtocol(selection, columnOrRow);
-                    showDataCenterMap();
+                    showDataCenterMap(true);
                     System.out.println("\nPress enter to continue...");
                     s.nextLine();
                     s.nextLine();
@@ -350,7 +360,7 @@ public class Main {
                     columnOrRow = s.nextInt();
 
                     dataCenter.simulatePowerOffProtocol(selection, columnOrRow);
-                    showDataCenterMap();
+                    showDataCenterMap(true);
                     System.out.println("\nPress enter to continue...");
                     s.nextLine();
                     s.nextLine();
@@ -371,6 +381,11 @@ public class Main {
 
     // ------------------------------------------------------------------------------------------------
 
+    /**
+     * Main menu of the program
+     * 
+     * @param args
+     */
     public static void main(String[] args) {
         double miniRoomsBaseValue = 0.0;
         boolean exit = false;
@@ -409,7 +424,7 @@ public class Main {
                     cancelMiniRoomRent();
                     break;
                 case 4:
-                    showDataCenterMap();
+                    showDataCenterMap(false);
                     System.out.println("\nPress enter to continue...");
                     s.nextLine();
                     s.nextLine();
