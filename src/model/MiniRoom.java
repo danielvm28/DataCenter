@@ -121,7 +121,7 @@ public class MiniRoom {
 
     /**
      * Sets the rent value of the mini room
-     * @param minimumWatchAge the rent value to set
+     * @param rentValue the rent value to set
      */
     public void setRentValue(double rentValue) {
         this.rentValue = rentValue;
