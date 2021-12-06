@@ -522,7 +522,7 @@ public class DataCenter {
         switch (letter) {
             case 'M': // For the mini rooms in the specified column
                 for (int i = 0; i < testMiniRooms.length; i++) {
-                    for (int j = 0; j < testMiniRooms.length; j++) {
+                    for (int j = 0; j < testMiniRooms[0].length; j++) {
                         if ((columnOrRow - 1) == j) {
                             testMiniRooms[i][j].setOn(false);
                         }
